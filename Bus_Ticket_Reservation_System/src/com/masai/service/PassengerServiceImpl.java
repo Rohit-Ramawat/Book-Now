@@ -1,8 +1,13 @@
 package com.masai.service;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
+import com.masai.entities.Bookings;
+import com.masai.entities.Bus;
 import com.masai.entities.Passenger;
+import com.masai.exception.BusException;
 import com.masai.exception.DuplicateDataException;
 import com.masai.exception.InvalidDetailsException;
 
@@ -36,5 +41,13 @@ public class PassengerServiceImpl implements PassengerService{
 			throw new InvalidDetailsException("you have not sign up yet, please signup");
 		}
 	}
+
+	@Override
+	public void bookingTickets(int id, int tickets, String email, Map<Integer, Bus> bus,
+			Map<String, Passenger> passenger, List<Bookings> booking) {
+		
+		
+	}
+
 
 }

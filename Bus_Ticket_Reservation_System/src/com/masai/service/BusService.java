@@ -11,10 +11,13 @@ public interface BusService {
 	
 	public String addBusDetails(Bus busObj, Map<Integer, Bus> busDetails);
 	
-	public void viewAllProducts(Map<Integer, Bus> bus) throws BusException;
+	public void viewAllBuses(Map<Integer, Bus> bus) throws BusException;
 	
 	public void deleteBus(int id, Map<Integer, Bus> bus) throws BusException;
 	
-	public String updateBus(int id, Bus busObj, Map<Integer, Bus> bus) throws BusException;
+	public String updateBusName(int id, Map<Integer, Bus> bus, String name) throws BusException;
 	
+	public String updateBusType(int id, Map<Integer, Bus> bus, String type) throws BusException;
+	
+	public String updateBusSeats(int id, Map<Integer, Bus> bus, int seats) throws BusException;
 }
