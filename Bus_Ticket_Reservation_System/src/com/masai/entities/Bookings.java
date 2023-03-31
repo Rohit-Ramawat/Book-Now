@@ -9,7 +9,7 @@ public class Bookings implements Serializable{
 	private String email;
 	private int busId;
 	private String busName;
-	private int numberOfTickets;
+	private int tickets;
 	private double price;
 	private double total;
 	private LocalDate dt;
@@ -18,14 +18,14 @@ public class Bookings implements Serializable{
 		super();
 	}
 
-	public Bookings(String username, String email, int busId, String busName, int numberOfTickets, double price,
+	public Bookings(String username, String email, int busId, String busName, int tickets, double price,
 			double total, LocalDate dt) {
 		super();
 		this.username = username;
 		this.email = email;
 		this.busId = busId;
 		this.busName = busName;
-		this.numberOfTickets = numberOfTickets;
+		this.tickets = tickets;
 		this.price = price;
 		this.total = total;
 		this.dt = dt;
@@ -63,12 +63,12 @@ public class Bookings implements Serializable{
 		this.busName = busName;
 	}
 
-	public int getNumberOfTickets() {
-		return numberOfTickets;
+	public int getTickets() {
+		return tickets;
 	}
 
-	public void setNumberOfTickets(int numberOfTickets) {
-		this.numberOfTickets = numberOfTickets;
+	public void setTickets(int tickets) {
+		this.tickets = tickets;
 	}
 
 	public double getPrice() {
@@ -98,7 +98,7 @@ public class Bookings implements Serializable{
 	@Override
 	public String toString() {
 		return "Bookings [username=" + username + ", email=" + email + ", busId=" + busId + ", busName=" + busName
-				+ ", numberOfTickets=" + numberOfTickets + ", price=" + price + ", total=" + total + ", dt=" + dt + "]";
+				+ ", tickets=" + tickets + ", price=" + price + ", total=" + total + ", dt=" + dt + "]";
 	}
 	
 	

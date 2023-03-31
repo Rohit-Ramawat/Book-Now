@@ -5,13 +5,14 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
 import com.masai.entities.Bookings;
 import com.masai.entities.Bus;
 import com.masai.entities.Passenger;
 import com.masai.exception.BusException;
 import com.masai.exception.DuplicateDataException;
 import com.masai.exception.InvalidDetailsException;
+import com.masai.service.BookingService;
+import com.masai.service.BookingServiceImpl;
 import com.masai.service.BusService;
 import com.masai.service.BusServiceImpl;
 import com.masai.service.PassengerService;
@@ -60,9 +61,10 @@ public class Main {
 					break;
 				case 4:
 
-					String upt = adminUpdateBus(sc, bus, busService);
-					System.out.println(upt);
-					break;	
+					adminUpdateBus(sc, bus, busService);
+					break;
+				case 7:
+					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + choice);
 				}
@@ -123,7 +125,7 @@ public class Main {
 	
 	public static void adminViewAllBus(Map<Integer, Bus> bus, BusService busService)throws BusException {
 		
-		busService.viewAllProducts(bus);        //calling service class function
+		busService.viewAllBuses(bus);        //calling service class function
 	
 	}
 	
@@ -134,27 +136,51 @@ public class Main {
 		busService.deleteBus(id, bus);
 	} 
 	
-	public static String adminUpdateBus(Scanner sc, Map<Integer, Bus> bus, BusService busService)throws BusException {
+	public static void adminUpdateBus(Scanner sc, Map<Integer, Bus> bus, BusService busService)throws BusException {
 		
-		String result = null;
+		String res="no chnages";
 		System.out.println("please enter the id of the bus, details of which is to be updated");
-		int id = sc.nextInt();
-		System.out.println("Enter the updated details ");
-
-		System.out.println("Enter new Bus name");
-		String name = sc.next();
-
-		System.out.println("Enter new Bus Type");
-		String type = sc.next();
-
-		System.out.println("Enter the updated total seats");
-		int totalseats = sc.nextInt();
-
-		//Bus update = new Bus(name,type,id);    //<-----Bus class Object
-        
-		//result = busService.updateBus(id,  bus);
 		
-		return result;
+		int id = sc.nextInt();
+		
+		int choice =0;
+		try {
+			do {
+				System.out.println("Press 1 to update bus name");
+				System.out.println("Press 2 to update bus type");
+				System.out.println("Press 3 to update bus totalseats");
+				System.out.println("Press 4 to go back");
+				choice = sc.nextInt();
+
+				switch (choice) {
+				case 1:
+					System.out.println("Enter new Bus name");
+					String name = sc.next();
+					res=busService.updateBusName(id,bus,name);
+					System.out.println(res);
+					break;
+				case 2:
+					System.out.println("Enter new Bus Type");
+					String type = sc.next();
+					res=busService.updateBusType(id,bus,type);
+					System.out.println(res);
+					break;
+				case 3:
+					System.out.println("Enter the updated total seats");
+					int totalseats = sc.nextInt();
+					System.out.println(res);
+					break;
+				case 4:
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + choice);
+				}
+
+			} while (choice <= 3);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	
@@ -184,6 +210,7 @@ public class Main {
     
 	public static void passengerLogin(String email,String password, Map<String, Passenger> passenger, PassengerService passService)
 			throws InvalidDetailsException {
+		
 		passService.login(email, password,passenger);
 		System.out.println("Passenger has successfully login");
 
@@ -194,7 +221,7 @@ public class Main {
 		
 		PassengerService passService = new PassengerServiceImpl();
 		BusService busService = new BusServiceImpl();
-		//TransactionService trnsactionService = new TransactionServiceImpl();
+		BookingService bookingService = new BookingServiceImpl();
 
 		// Customer login
 		System.out.println("please enter the following details to login");
@@ -217,14 +244,14 @@ public class Main {
 				System.out.println("Press 7 to logout");
 				choice = sc.nextInt();
 
-//				switch (choice) {
-//				case 1:
-//					customerViewAllProducts(products, prodService);
-//					break;
-//				case 2:
-//					String result = customerBuyProduct(sc, email, products, customers, transactions, cusService);
-//					System.out.println(result);
-//					break;
+				switch (choice) {
+				case 1:
+					passengerViewAllBuses(bus, busService);
+					break;
+				case 2:
+					String result = passengerBookingTickets(sc, email, bus, passenger, booking, passService);
+					System.out.println(result);
+					break;
 //				case 3:
 //					String moneyAdded = customerAddMoneyToWallet(sc, email, customers, cusService);
 //					System.out.println(moneyAdded);
@@ -242,10 +269,10 @@ public class Main {
 //				case 7:
 //					System.out.println("you have successsfully logout");
 //					break;
-//				default:
-//					System.out.println("invalid choice");
-//					break;
-//				}
+				default:
+				    System.out.println("invalid choice");
+					break;
+			}
 
 			} while (choice <= 6);
 		} catch (Exception e) {
@@ -253,7 +280,24 @@ public class Main {
 		}
 		
 	}
+	
+	public static void passengerViewAllBuses(Map<Integer, Bus> bus, BusService busService)
+			throws BusException {
+		busService.viewAllBuses(bus);
+	}
 
+	private static String passengerBookingTickets(Scanner sc, String email, Map<Integer, Bus> bus,
+			Map<String, Passenger> passenger, List<Bookings> booking, PassengerService passService) {
+		
+		System.out.println("Enter the bus number");
+		int id = sc.nextInt();
+		System.out.println("enter the no of tickets you want to book");
+		int tickets = sc.nextInt();
+		passService.bookingTickets(id, tickets, email, bus, passenger, booking);
+		
+		return "You have successfully bought the ticket";
+	}
+	
 	public static void main(String[] args) {
 		
 		Map<Integer,Bus> bus = FileExists.busFile();
