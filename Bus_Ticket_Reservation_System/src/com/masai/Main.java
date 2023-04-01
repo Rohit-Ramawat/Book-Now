@@ -8,6 +8,7 @@ import java.util.Scanner;
 import com.masai.entities.Bookings;
 import com.masai.entities.Bus;
 import com.masai.entities.Passenger;
+import com.masai.exception.BookingException;
 import com.masai.exception.BusException;
 import com.masai.exception.DuplicateDataException;
 import com.masai.exception.InvalidDetailsException;
@@ -24,15 +25,15 @@ import com.masai.utility.IDGeneration;
 public class Main {
 	
 	// Administration functionality part-->
-	private static void adminFunctionality(Scanner sc, Map<Integer, Bus> bus, Map<String, Passenger> passenger,
+	public static void adminFunctionality(Scanner sc, Map<Integer, Bus> bus, Map<String, Passenger> passenger,
 			List<Bookings> booking) throws InvalidDetailsException {
 		
 		adminLogin(sc);    //<-----Administrator login 
 		
 		//service class's objects 
 		BusService busService = new BusServiceImpl();
-		//PassengerService passService = new PassengerServiceImpl();
-		//BookingsService bookService = new BookingsServiceImpl();
+		PassengerService passService = new PassengerServiceImpl();
+		BookingService bookService = new BookingServiceImpl();
 		
 		int choice =0;
 		try {
@@ -168,6 +169,7 @@ public class Main {
 				case 3:
 					System.out.println("Enter the updated total seats");
 					int totalseats = sc.nextInt();
+					res=busService.updateBusSeats(id, bus, totalseats);
 					System.out.println(res);
 					break;
 				case 4:
@@ -232,16 +234,17 @@ public class Main {
 		passengerLogin(email,password, passenger, passService);
 
 		try {
-			int choice = 0;
+			int choice = 0;  
 			do {
 				System.out.println("Select the option of your choice");
 				System.out.println("Press 1 to view all buses");
 				System.out.println("Press 2 to book tickets");
 				System.out.println("Press 3 to add money to a wallet");
 				System.out.println("Press 4 view wallet balance");
-				System.out.println("Press 5 view my details");
-				System.out.println("Press 6 view my booking");
-				System.out.println("Press 7 to logout");
+				System.out.println("Press 5 to change personal details");
+				System.out.println("Press 6 view my booking history");
+				System.out.println("Press 7 to delete account");
+				System.out.println("Press 8 to logout");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -252,42 +255,46 @@ public class Main {
 					String result = passengerBookingTickets(sc, email, bus, passenger, booking, passService);
 					System.out.println(result);
 					break;
-//				case 3:
-//					String moneyAdded = customerAddMoneyToWallet(sc, email, customers, cusService);
-//					System.out.println(moneyAdded);
-//					break;
-//				case 4:
-//					double walletBalance = customerViewWalletBalance(email, customers, cusService);
-//					System.out.println("Wallet balance is: " + walletBalance);
-//					break;
-//				case 5:
-//					customerViewMyDetails(email, customers, cusService);
-//					break;
-//				case 6:
-//					customerViewCustomerTransactions(email, transactions, trnsactionService);
-//					break;
-//				case 7:
-//					System.out.println("you have successsfully logout");
-//					break;
+				case 3:
+					String moneyAdded = passenegerAddMoneyToWallet(sc, email, passenger, passService);
+					System.out.println(moneyAdded);
+					break;
+				case 4:
+					double walletBalance = passengerViewWalletBalance(email, passenger, passService);
+					System.out.println("Wallet balance is: " + walletBalance);
+					break;
+				case 5:
+					passengerChangeDetails(sc, passenger, passService);
+					break;
+				case 6:
+					passengerViewBookings(email, booking, bookingService);
+					break;
+				case 7:
+					passengerDeleteAccount(sc, passenger, passService);
+					System.out.println("Your account has been deleted");
+					return;	
+				case 8:
+					System.out.println("you have successsfully logout");
+					break;
 				default:
 				    System.out.println("invalid choice");
 					break;
 			}
 
-			} while (choice <= 6);
+			} while (choice <= 7);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		
 	}
-	
+
 	public static void passengerViewAllBuses(Map<Integer, Bus> bus, BusService busService)
 			throws BusException {
 		busService.viewAllBuses(bus);
 	}
 
-	private static String passengerBookingTickets(Scanner sc, String email, Map<Integer, Bus> bus,
-			Map<String, Passenger> passenger, List<Bookings> booking, PassengerService passService) {
+	public static String passengerBookingTickets(Scanner sc, String email, Map<Integer, Bus> bus,
+			Map<String, Passenger> passenger, List<Bookings> booking, PassengerService passService) throws InvalidDetailsException, BusException {
 		
 		System.out.println("Enter the bus number");
 		int id = sc.nextInt();
@@ -297,6 +304,99 @@ public class Main {
 		
 		return "You have successfully bought the ticket";
 	}
+
+	public static String passenegerAddMoneyToWallet(Scanner sc, String email, Map<String, Passenger> passenger,
+			PassengerService passService) {
+		System.out.println("please enter the amount");
+		double money = sc.nextDouble();
+		boolean added = passService.addMoneyToWallet(money, email, passenger);
+
+		return "Amount: " + money + " successfully added to your wallet";
+	}
+	
+	public static double passengerViewWalletBalance(String email, Map<String, Passenger> passenger,
+			PassengerService passService) {
+		double walletBalance = passService.viewWalletBalance(email, passenger);
+		return walletBalance;
+	}
+	
+	private static void passengerViewBookings(String email, List<Bookings> booking, BookingService bookingService) throws BookingException {
+		
+		List<Bookings> myBookings = bookingService.viewPassengerBooking(email, booking);
+
+		for (Bookings bk : myBookings) {
+			System.out.println(bk);
+		}
+		
+	}
+	
+	public static void passengerDeleteAccount(Scanner sc, Map<String, Passenger> passenger, PassengerService passService) 
+			throws InvalidDetailsException {
+        
+		System.out.println("please enter your email before deleting");
+		String email = sc.next();
+		System.out.println("please enter your password before deleting");
+		String password = sc.next();
+		passService.deletePassenger(email,password, passenger);
+	}
+	
+	public static void passengerChangeDetails(Scanner sc,Map<String, Passenger> passenger, PassengerService passService)
+			throws InvalidDetailsException {
+		
+		String res="no chnages";
+		System.out.println("Enter your email");
+		
+		String email = sc.next();
+		
+		int choice =0;
+		try {
+			do {
+				System.out.println("Press 1 to change email");
+				System.out.println("Press 2 to change password");
+				System.out.println("Press 3 to change address");
+				System.out.println("Press 4 to change Mobile number");
+				System.out.println("Press 5 to go back");
+				choice = sc.nextInt();
+
+				switch (choice) {
+				case 1:
+					System.out.println("Enter new email");
+					String emailNew = sc.next();
+					res=passService.updateEmail(email,passenger,email);
+					System.out.println(res);
+					break;
+				case 2:
+					System.out.println("Enter new password");
+					String password = sc.next();
+					res=passService.updatePassword(email,passenger,password);
+					System.out.println(res);
+					break;
+				case 3:
+					System.out.println("Enter new address");
+					String address = sc.next();
+					res=passService.updateAddress(email, passenger, address);
+					System.out.println(res);
+					break;
+				case 4:
+					System.out.println("Enter new mobile number");
+					long mobileNo = sc.nextLong();
+					res=passService.updateMobileNo(email,passenger,mobileNo);
+					System.out.println(res);
+					break;
+				case 5:
+					break;
+				default:
+					throw new IllegalArgumentException("Unexpected value: " + choice);
+				}
+
+			} while (choice <= 4);
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		

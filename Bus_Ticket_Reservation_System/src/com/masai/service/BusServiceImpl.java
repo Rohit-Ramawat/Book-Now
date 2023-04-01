@@ -51,12 +51,16 @@ public class BusServiceImpl implements BusService{
 	@Override
 	public String updateBusName(int id, Map<Integer, Bus> bus, String name) throws BusException {
 		if (bus != null && bus.size() > 0) {
-			for(Map.Entry<Integer, Bus> mp : bus.entrySet()) {
-				if(mp.getValue().getId() == id ) {
-					mp.getValue().setBusName(name);
+			if(bus.containsKey(id)) {
+				for(Map.Entry<Integer, Bus> mp : bus.entrySet()) {
+					if(mp.getValue().getId() == id ) {
+						mp.getValue().setBusName(name);
+					}
 				}
+				return "Bus Name Updated Successfully";
+			} else {
+				throw new BusException("Bus Not Found");
 			}
-			return "Bus Name Updated Successfully";
 
 		} else {
 			throw new BusException("Bus list is empty");
@@ -84,12 +88,17 @@ public class BusServiceImpl implements BusService{
 	@Override
 	public String updateBusSeats(int id, Map<Integer, Bus> bus, int seats) throws BusException {
 		if (bus != null && bus.size() > 0) {
-			for(Map.Entry<Integer, Bus> mp : bus.entrySet()) {
-				if(mp.getValue().getId() == id ) {
-					mp.getValue().setTotalSeats(seats);
+			if(bus.containsKey(id)) {
+				for(Map.Entry<Integer, Bus> mp : bus.entrySet()) {
+					if(mp.getValue().getId() == id ) {
+						mp.getValue().setTotalSeats(seats);
+					}
 				}
+				return "Bus Seats Updated Successfully";
+			}else {
+				throw new BusException("Bus Not Found");
 			}
-			return "Bus Seats Updated Successfully";
+			
 
 		} else {
 			throw new BusException("Bus list is empty");

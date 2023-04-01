@@ -2,6 +2,7 @@ package com.masai.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Bookings implements Serializable{
 	
@@ -12,14 +13,15 @@ public class Bookings implements Serializable{
 	private int tickets;
 	private double price;
 	private double total;
-	private LocalDate dt;
+	private LocalDate date;
+	private LocalTime time;
 	
 	public Bookings() {
 		super();
 	}
 
 	public Bookings(String username, String email, int busId, String busName, int tickets, double price,
-			double total, LocalDate dt) {
+			double total, LocalDate date, LocalTime time) {
 		super();
 		this.username = username;
 		this.email = email;
@@ -28,7 +30,8 @@ public class Bookings implements Serializable{
 		this.tickets = tickets;
 		this.price = price;
 		this.total = total;
-		this.dt = dt;
+		this.date = date;
+		this.time=time;
 	}
 
 	public String getUsername() {
@@ -87,19 +90,27 @@ public class Bookings implements Serializable{
 		this.total = total;
 	}
 
-	public LocalDate getDt() {
-		return dt;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setDt(LocalDate dt) {
-		this.dt = dt;
+	public void setDate(LocalDate date) {
+		this.date = date;
+	}
+	
+	public LocalTime getTime() {
+		return time;
+	}
+
+	public void setTime(LocalTime time) {
+		this.time = time;
 	}
 
 	@Override
 	public String toString() {
 		return "Bookings [username=" + username + ", email=" + email + ", busId=" + busId + ", busName=" + busName
-				+ ", tickets=" + tickets + ", price=" + price + ", total=" + total + ", dt=" + dt + "]";
+				+ ", tickets=" + tickets + ", price=" + price + ", total=" + total + ", date=" + date + ", time=" + time
+				+ "]";
 	}
-	
-	
+
 }
