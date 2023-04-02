@@ -25,7 +25,9 @@ public interface PassengerService {
 	public double viewWalletBalance(String email, Map<String, Passenger> passenger);
 
 	public void deletePassenger(String email,String password, Map<String, Passenger> passenger)throws InvalidDetailsException;
-
+    
+	public Passenger viewPassenegrDetails(String email, Map<String, Passenger> passenger);
+	
 	public String updateEmail(String email, Map<String, Passenger> passenger, String email2)throws InvalidDetailsException;
 
 	public String updatePassword(String email, Map<String, Passenger> passenger, String password)throws InvalidDetailsException;
@@ -33,4 +35,8 @@ public interface PassengerService {
 	public String updateAddress(String email, Map<String, Passenger> passenger, String address)throws InvalidDetailsException;
 
 	public String updateMobileNo(String email, Map<String, Passenger> passenger, long mobileNo)throws InvalidDetailsException;
+
+	public List<Passenger> viewAllCustomers(Map<String, Passenger> passenger)throws BusException;
+
+	
 }

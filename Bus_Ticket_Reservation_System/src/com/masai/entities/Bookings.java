@@ -8,6 +8,7 @@ public class Bookings implements Serializable{
 	
 	private String username;
 	private String email;
+	private int bookingId;
 	private int busId;
 	private String busName;
 	private int tickets;
@@ -20,11 +21,12 @@ public class Bookings implements Serializable{
 		super();
 	}
 
-	public Bookings(String username, String email, int busId, String busName, int tickets, double price,
+	public Bookings(String username, String email,int bookingId, int busId, String busName, int tickets, double price,
 			double total, LocalDate date, LocalTime time) {
 		super();
 		this.username = username;
 		this.email = email;
+		this.bookingId=bookingId;
 		this.busId = busId;
 		this.busName = busName;
 		this.tickets = tickets;
@@ -48,6 +50,14 @@ public class Bookings implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+    
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	public int getBusId() {
@@ -108,9 +118,11 @@ public class Bookings implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Bookings [username=" + username + ", email=" + email + ", busId=" + busId + ", busName=" + busName
-				+ ", tickets=" + tickets + ", price=" + price + ", total=" + total + ", date=" + date + ", time=" + time
-				+ "]";
+		return "Bookings [username=" + username + ", email=" + email + ", bookingId=" + bookingId + ", busId=" + busId
+				+ ", busName=" + busName + ", tickets=" + tickets + ", price=" + price + ", total=" + total + ", date="
+				+ date + ", time=" + time + "]";
 	}
+
+	
 
 }

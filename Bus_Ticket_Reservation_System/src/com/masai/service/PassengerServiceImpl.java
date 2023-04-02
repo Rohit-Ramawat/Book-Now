@@ -2,6 +2,8 @@ package com.masai.service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import com.masai.entities.Passenger;
 import com.masai.exception.BusException;
 import com.masai.exception.DuplicateDataException;
 import com.masai.exception.InvalidDetailsException;
+import com.masai.utility.IDGeneration;
 
 public class PassengerServiceImpl implements PassengerService{
 
@@ -67,7 +70,7 @@ public class PassengerServiceImpl implements PassengerService{
 
 					bus.put(id, busObj);
 
-					Bookings bk = new Bookings(pass.getUsername(), email, id, busObj.getBusName(), tickets,
+					Bookings bk = new Bookings(pass.getUsername(), email,IDGeneration.generateId(),id, busObj.getBusName(), tickets,
 							busObj.getTicketPrice(), buyingPrice, LocalDate.now(), LocalTime.now());
 
 					booking.add(bk);
@@ -120,7 +123,16 @@ public class PassengerServiceImpl implements PassengerService{
 
 		} 
 	}
-
+    
+	@Override
+	public Passenger viewPassenegrDetails(String email, Map<String, Passenger> passenger) {
+		
+		if(passenger.containsKey(email)) {
+			return passenger.get(email);
+		}
+		return null;
+	}
+	
 	@Override
 	public String updateEmail(String email, Map<String, Passenger> passenger, String email2) throws InvalidDetailsException {
 		
@@ -161,6 +173,22 @@ public class PassengerServiceImpl implements PassengerService{
 			throw new InvalidDetailsException();
 		}
 	}
+
+	@Override
+	public List<Passenger> viewAllCustomers(Map<String, Passenger> passenger) throws BusException {
+		List<Passenger> list = null;
+
+		if (passenger != null && passenger.size() > 0) {
+			Collection<Passenger> coll = passenger.values();
+			list = new ArrayList<>(coll);
+		} else {
+			throw new BusException("Passenger list is empty");
+		}
+
+		return list;
+	}
+
+	
 
 
 }
