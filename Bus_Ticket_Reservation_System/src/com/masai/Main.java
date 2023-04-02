@@ -2,6 +2,8 @@ package com.masai;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -44,7 +46,10 @@ public class Main {
 				System.out.println("Press 4 update the bus details");
 				System.out.println("Press 5 view all passengers");
 				System.out.println("Press 6 to view all bookings");
-				System.out.println("Press 7 to log out");
+				System.out.println("Press 7 to view booking by Bus Name");
+				System.out.println("Press 8 to view booking by passenger username");
+				System.out.println("Press 9 to view booking by date range");
+				System.out.println("Press 10 to log out");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -53,24 +58,36 @@ public class Main {
 					System.out.println(added);
 					break;
 				case 2:
-
 					adminViewAllBus(bus, busService);
 					break;
 				case 3:
-
 					adminDeleteBus(sc, bus, busService);
 					break;
 				case 4:
-
 					adminUpdateBus(sc, bus, busService);
 					break;
+				case 5:
+					adminViewAllPassengers(passenger, passService);
+					break;
+				case 6:
+					adminViewAllBookings(booking, bookService);
+					break;	
 				case 7:
+					adminViewBookingsByBusName(sc,booking, bookService);
+					break;
+				case 8:
+					adminViewBookingsByUserName(sc,booking, bookService);
+					break;	
+				case 9:
+					adminViewBookingByDate(sc,booking, bookService);
+					break;
+				case 10:
 					break;
 				default:
 					throw new IllegalArgumentException("Unexpected value: " + choice);
 				}
 
-			} while (choice <= 6);
+			} while (choice <= 9);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -110,7 +127,7 @@ public class Main {
 		String source = sc.next();
 		System.out.println("Enter destination ");
 		String destination = sc.next();
-		System.out.println("Enter Departure Time ");
+		System.out.println("Enter Departure Time in HH:MM:SS format");
 		String departureTime = sc.next();
 		System.out.println("Enter Arrival Time ");
 		String arrivalTime = sc.next();
@@ -185,8 +202,69 @@ public class Main {
 		}
 	}
 	
+	public static void adminViewAllPassengers(Map<String, Passenger> passenger, PassengerService passService) 
+			throws BusException {
+		
+		List<Passenger> list = passService.viewAllCustomers(passenger);
+
+		for (Passenger p : list) {
+			System.out.println(p);
+		}
+		
+	}
+
+	public static void adminViewAllBookings(List<Bookings> booking, BookingService bookService) 
+			throws BookingException {
+		
+		List<Bookings> list = bookService.viewAllBookings(booking);
+		
+		for (Bookings b : list) {
+			System.out.println(b);
+		}
+		
+	}
 	
+	public static void adminViewBookingsByBusName(Scanner sc,List<Bookings> booking, BookingService bookService)
+			throws BookingException {
+		System.out.println("Enter busname");
+		String busName = sc.next();
+		List<Bookings> list = bookService.viewBookingsByBusName(busName,booking);
+		
+		for (Bookings b : list) {
+			System.out.println(b);
+		}
+		
+	}
 	
+	private static void adminViewBookingsByUserName(Scanner sc, List<Bookings> booking, BookingService bookService) 
+			throws BookingException {
+		System.out.println("Enter Username");
+		String userName = sc.next();
+		List<Bookings> list = bookService.viewBookingsByUserName(userName,booking);
+		
+		for (Bookings b : list) {
+			System.out.println(b);
+		}
+		
+	}
+
+
+	public static void adminViewBookingByDate(Scanner sc, List<Bookings> booking, BookingService bookService) 
+		    throws BookingException {
+		System.out.println("Enter Start Date in YYYY-MM-DD format");
+		String startDate = sc.next();
+		System.out.println("Enter End Date in YYYY-MM-DD format");
+		String endDate = sc.next();
+		List<Bookings> list = bookService.viewBookingsByDate(startDate,endDate,booking);
+		
+		for (Bookings b : list) {
+			System.out.println(b);
+		}
+		
+		
+	}
+
+
 	//passenger functionality part-->
 	public static void passengerSignup(Scanner sc, Map<String, Passenger> passenger) throws DuplicateDataException{
 		
@@ -241,10 +319,12 @@ public class Main {
 				System.out.println("Press 2 to book tickets");
 				System.out.println("Press 3 to add money to a wallet");
 				System.out.println("Press 4 view wallet balance");
-				System.out.println("Press 5 to change personal details");
-				System.out.println("Press 6 view my booking history");
-				System.out.println("Press 7 to delete account");
-				System.out.println("Press 8 to logout");
+				System.out.println("Press 5 to view your personal details");
+				System.out.println("Press 6 to change personal details");
+				System.out.println("Press 7 to view my booking history");
+				System.out.println("Press 8 to cancel a booking");
+				System.out.println("Press 9 to delete account");
+				System.out.println("Press 10 to logout");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -264,16 +344,22 @@ public class Main {
 					System.out.println("Wallet balance is: " + walletBalance);
 					break;
 				case 5:
+					passengerViewMyDetails(email, passenger, passService);
+					break;	
+				case 6:
 					passengerChangeDetails(sc, passenger, passService);
 					break;
-				case 6:
+				case 7:
 					passengerViewBookings(email, booking, bookingService);
 					break;
-				case 7:
+				case 8:
+					passengerCancelBooking(sc,booking,bookingService,bus);
+					break;
+				case 9:
 					passengerDeleteAccount(sc, passenger, passService);
 					System.out.println("Your account has been deleted");
 					return;	
-				case 8:
+				case 10:
 					System.out.println("you have successsfully logout");
 					break;
 				default:
@@ -281,7 +367,7 @@ public class Main {
 					break;
 			}
 
-			} while (choice <= 7);
+			} while (choice <= 9);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -320,13 +406,22 @@ public class Main {
 		return walletBalance;
 	}
 	
-	private static void passengerViewBookings(String email, List<Bookings> booking, BookingService bookingService) throws BookingException {
+	public static void passengerViewBookings(String email, List<Bookings> booking, BookingService bookingService) throws BookingException {
 		
 		List<Bookings> myBookings = bookingService.viewPassengerBooking(email, booking);
-
+        
 		for (Bookings bk : myBookings) {
 			System.out.println(bk);
 		}
+		
+	}
+	
+	public static void passengerCancelBooking(Scanner sc, List<Bookings> booking, BookingService bookingService,
+			Map<Integer, Bus> bus)throws BookingException {
+	    System.out.println("Enter your booking id");
+	    int bookingId = sc.nextInt();
+	    
+	    bookingService.cancelBooking(bookingId,booking,bus);
 		
 	}
 	
@@ -338,6 +433,17 @@ public class Main {
 		System.out.println("please enter your password before deleting");
 		String password = sc.next();
 		passService.deletePassenger(email,password, passenger);
+	}
+	
+	public static void passengerViewMyDetails(String email, Map<String, Passenger> passenger,PassengerService passService) {
+		
+		Passenger pass = passService.viewPassenegrDetails(email, passenger);
+		System.out.println("name : " + pass.getUsername());
+		System.out.println("address : " + pass.getAddress());
+		System.out.println("email : " + pass.getEmail());
+		System.out.println("mobile number : " + pass.getMobileNo());
+		System.out.println("wallet balance : " + pass.getWalletBalance());
+		
 	}
 	
 	public static void passengerChangeDetails(Scanner sc,Map<String, Passenger> passenger, PassengerService passService)
