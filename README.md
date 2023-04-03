@@ -26,7 +26,7 @@
 - Can cancel his booking before the departure of the bus.
 - Can delete his account.
 - login.
-- sigup.
+- sign up.
 
 ## Tech-Stacks:
 - Core Java
