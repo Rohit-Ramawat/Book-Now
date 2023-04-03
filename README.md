@@ -28,7 +28,9 @@
 - login.
 - sigup.
 
-## Tech-Stacks
+## Tech-Stacks:
 - Core Java
-## IDE
+## IDE:
 - STS
+## Authors:
+- Rohit-Ramawat
