@@ -15,3 +15,15 @@
 - Can view booking by passenger username.
 - Can view booking by date range.
 
+## The roles of the Passenger are:
+- View the list of all buses.
+- Can book tickets of any available bus.
+- Can add money into the wallet.
+- Can check money in the wallet.
+- Can view his personal details.
+- Can change his personal details except username.
+- Can view his booking history.
+- Can cancel his booking before the departure of the bus.
+- Can delete his account.
+- login.
+- sigup.
