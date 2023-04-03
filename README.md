@@ -1,3 +1,3 @@
 Bus Tickets Reservation System.
-This application is designed to serve the purpose of online booking and reservation of bus tickets of various bus travel agencies.
+This application is designed to serve the purpose of online booking and reservation of bus tickets of various bus travel agencies.Also various 
 
