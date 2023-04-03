@@ -40,9 +40,10 @@ public class Main {
 		int choice =0;
 		try {
 			do {
+				System.out.println("---------------------------------------------");
 				System.out.println("Press 1 add the new bus details");
 				System.out.println("Press 2 view all the bus's details");
-				System.out.println("Press 3 delete the any bus details");
+				System.out.println("Press 3 delete any bus details");
 				System.out.println("Press 4 update the bus details");
 				System.out.println("Press 5 view all passengers");
 				System.out.println("Press 6 to view all bookings");
@@ -50,6 +51,7 @@ public class Main {
 				System.out.println("Press 8 to view booking by passenger username");
 				System.out.println("Press 9 to view booking by date range");
 				System.out.println("Press 10 to log out");
+				System.out.println("---------------------------------------------");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -127,7 +129,7 @@ public class Main {
 		String source = sc.next();
 		System.out.println("Enter destination ");
 		String destination = sc.next();
-		System.out.println("Enter Departure Time in HH:MM:SS format");
+		System.out.println("Enter Departure Time in format(HH:MM:SS)");
 		String departureTime = sc.next();
 		System.out.println("Enter Arrival Time ");
 		String arrivalTime = sc.next();
@@ -164,10 +166,12 @@ public class Main {
 		int choice =0;
 		try {
 			do {
+				System.out.println("--------------------------------");
 				System.out.println("Press 1 to update bus name");
 				System.out.println("Press 2 to update bus type");
 				System.out.println("Press 3 to update bus totalseats");
 				System.out.println("Press 4 to go back");
+				System.out.println("--------------------------------");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -314,6 +318,7 @@ public class Main {
 		try {
 			int choice = 0;  
 			do {
+				System.out.println("---------------------------------------");
 				System.out.println("Select the option of your choice");
 				System.out.println("Press 1 to view all buses");
 				System.out.println("Press 2 to book tickets");
@@ -325,6 +330,7 @@ public class Main {
 				System.out.println("Press 8 to cancel a booking");
 				System.out.println("Press 9 to delete account");
 				System.out.println("Press 10 to logout");
+				System.out.println("---------------------------------------");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -457,11 +463,13 @@ public class Main {
 		int choice =0;
 		try {
 			do {
+				System.out.println("-------------------------------");
 				System.out.println("Press 1 to change email");
 				System.out.println("Press 2 to change password");
 				System.out.println("Press 3 to change address");
 				System.out.println("Press 4 to change Mobile number");
 				System.out.println("Press 5 to go back");
+				System.out.println("-------------------------------");
 				choice = sc.nextInt();
 
 				switch (choice) {
@@ -512,16 +520,20 @@ public class Main {
 		
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("Hello Welcome , in Bus Ticket Reservation System");
+		System.out.println("-------Hello Dear User, Welcome in Bus Ticket Reservation System-------");
         
 		try {
 			
 			int preference = 0;
 			
 			do {
-				System.out.println("Please enter your preference, " + " '1' --> Admin login , '2' --> Customer login , "
-						+ "'3' for Customer signup, '0' for exit");
-				
+				System.out.println("-------------------------------------");
+				System.out.println("Please enter your preference, Press");
+				System.out.println("'1' --> Admin login");
+				System.out.println("'2' --> Passenger login");
+				System.out.println("'3' --> for Passenger signup");
+				System.out.println("'0' --> for exit");
+				System.out.println("-------------------------------------");
 				preference = sc.nextInt();
 				
 				switch (preference) {
