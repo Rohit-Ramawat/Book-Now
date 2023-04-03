@@ -4,5 +4,5 @@
 ## Users of this application: 
 - Administrator 
 - Passenger
-
+## The roles of the Administrator are:
 
