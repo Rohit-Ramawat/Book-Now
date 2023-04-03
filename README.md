@@ -27,3 +27,8 @@
 - Can delete his account.
 - login.
 - sigup.
+
+##Tech-Stacks
+- Core Java
+## IDE
+- STS
